@@ -1,7 +1,7 @@
-//require('dotenv').config();
+require('dotenv').config();
 
 const express = require('express');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
 const app = express();
 
@@ -17,6 +17,10 @@ app.use((req, res, next) => {
   next();
 });
 
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log('DB Connected'))
+  .catch((err) => console.error('Error connecting to database:', err));
 
 
 app.get('/', (req, res) => {
