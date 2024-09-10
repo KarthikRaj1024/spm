@@ -1,9 +1,8 @@
-// src/TutorialPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./TutorialPage.css"; // Optional: Add styles here
+import "./Tutorialspage.css";
 
-const TutorialPage = () => {
+const TutorialsPage = () => {
   const [tutorials, setTutorials] = useState([]);
 
   useEffect(() => {
@@ -12,35 +11,37 @@ const TutorialPage = () => {
 
   const fetchTutorials = async () => {
     try {
-      const res = await axios.get("http://localhost:9000/api/adminTutorials");
+      const res = await axios.get(
+        "http://localhost:9000/api/tutorial/tutorials"
+      );
       setTutorials(res.data);
     } catch (err) {
-      console.error("Failed to fetch tutorials", err);
+      console.error(err);
     }
   };
 
   return (
-    <div className="tutorial-page">
+    <div className="tutorials-page">
       <h2>Available Tutorials</h2>
       <div className="tutorial-list">
-        {tutorials.length === 0 ? (
-          <p>No tutorials available at the moment.</p>
-        ) : (
+        {tutorials.length > 0 ? (
           <ul>
             {tutorials.map((tutorial) => (
               <li key={tutorial._id} className="tutorial-item">
                 <h3>{tutorial.title}</h3>
                 <p>{tutorial.content}</p>
                 <p>
-                  <strong>Instructor: {tutorial.tutor}</strong>
+                  <strong>Tutor:</strong> {tutorial.tutor}
                 </p>
               </li>
             ))}
           </ul>
+        ) : (
+          <p>No tutorials available.</p>
         )}
       </div>
     </div>
   );
 };
 
-export default TutorialPage;
+export default TutorialsPage;

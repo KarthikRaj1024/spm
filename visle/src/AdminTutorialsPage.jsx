@@ -6,6 +6,7 @@ const AdminTutorialsPage = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newTutor, setNewTutor] = useState(""); // Fixed variable name
+  const [editId, setEditId] = useState(null); // Track the tutorial being edited
 
   useEffect(() => {
     fetchTutorials();
@@ -38,29 +39,42 @@ const AdminTutorialsPage = () => {
     }
   };
 
+  const handleUpdateTutorial = async () => {
+    if (editId) {
+      try {
+        await axios.put(
+          `http://localhost:9000/api/tutorial/tutorials/${editId}`,
+          {
+            title: newTitle,
+            content: newContent,
+            tutor: newTutor,
+          }
+        );
+        fetchTutorials();
+        setNewTitle("");
+        setNewContent("");
+        setNewTutor("");
+        setEditId(null); // Reset editId after update
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   const handleDeleteTutorial = async (id) => {
     try {
-      await axios.delete(`http://localhost:9000/api/tutorial/tutorialsd/${id}`);
+      await axios.delete(`http://localhost:9000/api/tutorial/tutorials/${id}`);
       fetchTutorials();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleUpdateTutorial = async (id) => {
-    try {
-      await axios.put(`http://localhost:9000/api/tutorial/tutorials/${id}`, {
-        title: newTitle,
-        content: newContent,
-        tutor: newTutor,
-      });
-      fetchTutorials();
-      setNewTitle("");
-      setNewContent("");
-      setNewTutor("");
-    } catch (err) {
-      console.error(err);
-    }
+  const handleEditClick = (tutorial) => {
+    setNewTitle(tutorial.title);
+    setNewContent(tutorial.content);
+    setNewTutor(tutorial.tutor);
+    setEditId(tutorial._id);
   };
 
   return (
@@ -84,7 +98,11 @@ const AdminTutorialsPage = () => {
           onChange={(e) => setNewTutor(e.target.value)}
           placeholder="Enter Tutor"
         />
-        <button onClick={handleCreateTutorial}>Create Tutorial</button>
+        {editId ? (
+          <button onClick={handleUpdateTutorial}>Update Tutorial</button>
+        ) : (
+          <button onClick={handleCreateTutorial}>Create Tutorial</button>
+        )}
       </div>
 
       <div className="floating-container">
@@ -94,9 +112,7 @@ const AdminTutorialsPage = () => {
               <h3>{tut.title}</h3>
               <p>{tut.content}</p>
               <p>{tut.tutor}</p>
-              <button onClick={() => handleUpdateTutorial(tut._id)}>
-                Update
-              </button>
+              <button onClick={() => handleEditClick(tut)}>Edit</button>
               <button onClick={() => handleDeleteTutorial(tut._id)}>
                 Delete
               </button>

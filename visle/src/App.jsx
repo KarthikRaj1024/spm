@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminQuestionsPage from "./AdminQuestionsPage";
 import AdminTutorialsPage from "./AdminTutorialsPage";
 import ExamPage from "./examPage";
+import TutorialsPage from "./TutorialsPage";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
 
         {/* Route for AdminTutorialsPage */}
         <Route path="/AdminTutorialsPage" element={<AdminTutorialsPage />} />
+
+        <Route path="/TutorialsPage" element={<TutorialsPage />} />
       </Routes>
     </Router>
   );

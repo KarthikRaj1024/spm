@@ -39,7 +39,7 @@ router.put("/tutorials/:id", async (req, res) => {
 });
 
 // Delete a tutorial
-router.delete("/tutorialsd/:id", async (req, res) => {
+router.delete("/tutorials/:id", async (req, res) => {
   try {
     await Tutorial.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Tutorial deleted" });
