@@ -1,14 +1,29 @@
-import { useState } from 'react'
-import './App.css'
+// src/App.jsx
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AdminQuestionsPage from "./AdminQuestionsPage";
+import AdminTutorialsPage from "./AdminTutorialsPage";
+import ExamPage from "./examPage";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>SPM Project</h1>
-    </>
-  )
+    <Router>
+      <Routes>
+        {/* Default route will be AdminQuestionsPage */}
+        <Route path="/" element={<AdminQuestionsPage />} />
+
+        {/* Explicit route for AdminQuestionsPage */}
+        <Route path="/AdminQuestionsPage" element={<AdminQuestionsPage />} />
+
+        {/* Route for ExamPage */}
+        <Route path="/exam" element={<ExamPage />} />
+
+        {/* Route for AdminTutorialsPage */}
+        <Route path="/AdminTutorialsPage" element={<AdminTutorialsPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
